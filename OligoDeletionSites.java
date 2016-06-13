@@ -64,6 +64,17 @@ public class OligoDeletionSites {
 			String match = matches.get(i);
 			int matchIndex = matchedIndexes.get(i) + 1;
 			System.out.println("Matched \"" + addSpacesToSequence(match) + "\" at base pair " + matchIndex);
+			final int OLIGO_OFFSET = 39;
+			int startIndex = Math.max(0, matchedIndexes.get(i) - OLIGO_OFFSET);
+			int endIndex = Math.min(matchedIndexes.get(i) + match.length() + OLIGO_OFFSET, geneSequence.length());
+			String oligo = geneSequence.substring(startIndex, endIndex);
+			
+			System.out.println("Possible oligo: (" + ++startIndex + ") " + oligo + " (" + endIndex + ")");
+			
+			if(oligo.length() != match.length() + 2 * OLIGO_OFFSET) {
+				System.out.println("~~ Oligo is too close to an end ~~");
+			}
+			System.out.print("\n");
 		}
 		
 		//highlight matches
@@ -72,6 +83,7 @@ public class OligoDeletionSites {
 		for (int i = 0; i < matches.size(); i++) {
 			String match = matches.get(i);
 			int matchIndex = matchedIndexes.get(i);
+			
 			if (matchIndex > endOfLastMatch) {
 				casedGene += geneSequence.substring(endOfLastMatch, matchIndex).toLowerCase();
 			}
@@ -86,14 +98,16 @@ public class OligoDeletionSites {
 		System.out.println(addSpacesToSequence(casedGene));
 	}
 	
-	public static String addSpacesToSequence (String geneSequence) {
+	public static String addSpacesToSequence (String dnaSequence) {
 		String geneSequenceWithSpaces = "";
-		char[] casedGeneCharacters = geneSequence.toCharArray();
+		char[] casedGeneCharacters = dnaSequence.toCharArray();
+		
 		for (int i = 0; i < casedGeneCharacters.length; i++) {
 			char character = casedGeneCharacters[i];
 			geneSequenceWithSpaces += character;
 			boolean addSpace = (i % 3 == 2);
-			boolean lastCharacter = (i == geneSequence.length() - 1);
+			boolean lastCharacter = (i == dnaSequence.length() - 1);
+			
 			if (addSpace && !lastCharacter) {
 				geneSequenceWithSpaces += " ";
 			}
