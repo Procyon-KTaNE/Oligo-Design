@@ -103,17 +103,17 @@ public class OligoDeletionSites {
 			char[] dnaSequenceCharacters = dnaSequence.toCharArray();
 			for(int i = 0; i < dnaSequence.length(); i++) {
 				char character = dnaSequenceCharacters[i];
-				if(character == 'a') {
-					complement += 't';
+				if(character == 'A') {
+					complement += 'T';
 				}
-				else if(character == 'c') {
-					complement += 'g';
+				else if(character == 'C') {
+					complement += 'G';
 				}
-				else if(character == 'g') {
-					complement += 'c';
+				else if(character == 'G') {
+					complement += 'C';
 				}
-				else if(character == 't') {
-					complement += 'a';
+				else if(character == 'T') {
+					complement += 'A';
 				}
 				else if(character == ' ') {
 					complement += ' ';
@@ -123,8 +123,11 @@ public class OligoDeletionSites {
 			for(int i = complement.length() - 1; i >= 0; i--) {
 				reverseComplement += complement.charAt(i);
 			}
+			
+			return reverseComplement;
 		}
-		
-		return reverseComplement;
+		else {
+			return dnaSequence;
+		}
 	}
 }
