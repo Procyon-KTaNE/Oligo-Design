@@ -9,7 +9,7 @@
  *     Dr. Thomas K. Harris (Department of Biochemistry and Molecular Biology, University of Miami Miller School of Medicine)
  * 
  * Date created: 06/11/16
- * Last updated: 06/16/16
+ * Last updated: 06/17/16
  */
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class OligoDeletionSites {
 		map.put("sulA", "ATG TAC ACT TCA GGC TAT GCA CAT CGT TCT TCG TCG TTC TCA TCC GCA GCA AGT AAA ATT GCG CGT GTC TCT ACG GAA AAC ACT ACA GCC GGG CTT ATC AGT GAA GTT GTC TAT CGC GAA GAT CAG CCC ATG ATG ACG CAA CTT CTA CTG TTG CCA TTG TTA CAG CAA CTC GGT CAG CAA TCG CGC TGG CAA CTC TGG TTA ACA CCG CAA CAA AAA CTG AGT CGG GAA TGG GTT CAG GCA TCT GGG CTA CCC TTA ACG AAA GTA ATG CAG ATT AGC CAG CTC TCC CCT TGC CAC ACT GTG GAG TCA ATG GTT CGC GCT TTA CGC ACG GGC AAT TAC AGT GTG GTG ATC GGT TGG TTG GCA GAT GAT TTG ACT GAA GAA GAG CAT GCT GAA CTT GTT GAT GCG GCA AAT GAA GGT AAC GCT ATG GGG TTT ATT ATG CGT CCG GTA AGC GCA TCC TCT CAC GCC ACG AGA CAA CTT TCC GGG CTA AAA ATT CAC TCT AAT TTG TAT CAT TAA");
 		
 		//regex
-		String regexPattern = "(((((([ACGT]{0,2})(G[ACGT\\s]{1,5}))([ACG](AA|AG|GA)\\s))|((([ACGT]{0,2})(G[ACGT\\s]{1,3}))(T(C[AG]|GG|T[AG])\\s))|((([ACGT]{1,2})(G[ACGT\\s]{1,2}))(T(A[GT]|G[CGT])\\s)))(([ACGT]{3}\\s){0,3})){2})";
+		String regexPattern = "(((((([ACGT]{0,2})(G[ACGT\\s]{1,5}?))([ACG](AA|AG|GA)\\s))|((([ACGT]{0,2}?)(G[ACGT\\s]{1,3}?))(T(C[AG]|GG|T[AG])\\s))|((([ACGT]{1,2}?)(G[ACGT\\s]{1,2}?))(T(A[GT]|G[CGT])\\s)))(([ACGT]{3}\\s){0,3}?)){2})";
 		String desiredGene = keyboard.nextLine();
 		String geneSequence = checkForReverseComplement(map.get(desiredGene));
 		
@@ -61,10 +61,10 @@ public class OligoDeletionSites {
 			String match = matches.get(i);
 			int matchIndex = matchedIndexes.get(i) + 1;
 			System.out.println("Matched \"" + match + "\" at base pair " + matchIndex);
-			final int OLIGO_OFFSET = 50;
+			final int OLIGO_OFFSET = 80;
 			int startIndex = Math.max(0, matchedIndexes.get(i) - OLIGO_OFFSET);
 			int endIndex = Math.min(matchedIndexes.get(i) + match.length() + OLIGO_OFFSET, geneSequence.length());
-			String oligo = geneSequence.substring(startIndex, endIndex);
+			String oligo = geneSequence.substring(startIndex, endIndex - 1);
 			
 			System.out.println("Possible oligo: (" + ++startIndex + ") " + oligo + " (" + endIndex + ")");
 			
