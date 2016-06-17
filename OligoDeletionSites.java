@@ -43,7 +43,9 @@ public class OligoDeletionSites {
 		//regex
 		String regexPattern = "(((((([ACGT]{0,2})(G[ACGT\\s]{1,5}?))([ACG](AA|AG|GA)\\s))|((([ACGT]{0,2}?)(G[ACGT\\s]{1,3}?))(T(C[AG]|GG|T[AG])\\s))|((([ACGT]{1,2}?)(G[ACGT\\s]{1,2}?))(T(A[GT]|G[CGT])\\s)))(([ACGT]{3}\\s){0,3}?)){2})";
 		String desiredGene = keyboard.nextLine();
+		System.out.println(desiredGene);
 		String geneSequence = checkForReverseComplement(map.get(desiredGene));
+		System.out.println("Length: " + geneSequence.length() + "\n");
 		
 		Pattern regex = Pattern.compile(regexPattern);
 		Matcher matcher = regex.matcher(geneSequence);
@@ -59,18 +61,25 @@ public class OligoDeletionSites {
 		
 		for (int i = 0; i < matches.size(); i++) {
 			String match = matches.get(i);
-			int matchIndex = matchedIndexes.get(i) + 1;
+			int matchIndex = matchedIndexes.get(i) * 3 / 4 + 1;
 			System.out.println("Matched \"" + match + "\" at base pair " + matchIndex);
 			final int OLIGO_OFFSET = 80;
 			int startIndex = Math.max(0, matchedIndexes.get(i) - OLIGO_OFFSET);
 			int endIndex = Math.min(matchedIndexes.get(i) + match.length() + OLIGO_OFFSET, geneSequence.length());
 			String oligo = geneSequence.substring(startIndex, endIndex - 1);
 			
-			System.out.println("Possible oligo: (" + ++startIndex + ") " + oligo + " (" + endIndex + ")");
+			int printStartIndex = startIndex * 3 / 4 + 1;
+			int printEndIndex = endIndex * 3 / 4;
 			
-			if(oligo.length() != match.length() + 2 * OLIGO_OFFSET) {
-				System.out.println("~~ Need more nucleotides ~~");
+			System.out.println("Possible oligo inside: (" + printStartIndex + ") " + oligo + " (" + printEndIndex + ")");
+			
+			System.out.println("POSSIBLE OLIGOS");
+			oligo = oligo.replace(" ", "");
+			for(int j = 0; j <= oligo.length() - 90; j++) {
+				String oligoSubstring = oligo.substring(j, j + 90);
+				System.out.println(oligoSubstring);
 			}
+			
 			System.out.print("\n");
 		}
 		
