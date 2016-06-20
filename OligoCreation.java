@@ -1,3 +1,16 @@
+/*
+ * This program creates oligos from gene sequences obtained in the OligoDeletionSites class
+ * 
+ * Code written by 
+ *     Trevor Birenbaum (University of Miami '20)
+ * Special thanks
+ *     Dr. Richard S. Myers (Department of Biochemistry and Molecular Biology, University of Miami Miller School of Medicine)
+ *     Dr. Thomas K. Harris (Department of Biochemistry and Molecular Biology, University of Miami Miller School of Medicine)
+ * 
+ * Date created: 06/20/16
+ * Last updated: 06/20/16
+ */
+
 import java.util.Scanner;
 
 public class OligoCreation {
@@ -7,9 +20,7 @@ public class OligoCreation {
 		String gene = keyboard.nextLine();
 		String oligoReverseComplement = keyboard.nextLine();
 		String oligoString = reverseComplement(oligoReverseComplement);
-		
-		//putting letters back in oligo
-		
+
 		System.out.println(oligoString + "\n");
 		
 		for(int i = 0; i <= oligoString.length() - 90; i++) {
