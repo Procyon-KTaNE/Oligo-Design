@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class RegexReplacement {
 	
 	public static void main(String[] args) {
+		
 		Scanner keyboard = new Scanner(System.in);
 		
 		String regexPattern = "(((((([ACGT]{0,2}?)(C[ACGT\\s]{1,5}?))([ACG](AA|AG|GA)\\s))|((([ACGT]{0,2}?)(C[ACGT\\s]{1,3}?))(T(C[AG]|GG|T[AG])\\s))|((([ACGT]{1,2}?)(C[ACGT\\s]{1,2}?))(T(A[GT]|G[CGT])\\s)))(([ACGT]{3}\\s){0,3}?)){2})";
@@ -32,6 +33,7 @@ public class RegexReplacement {
 		 */
 		
 		String geneSequence = keyboard.nextLine(); //takes gene sequence as input
+		long startTime = System.currentTimeMillis();
 		
 		Pattern regex = Pattern.compile(regexPattern);
 		Matcher matcher = regex.matcher(geneSequence);
@@ -68,23 +70,28 @@ public class RegexReplacement {
 			String secondCodon = match.substring(4, 7);
 			
 			//change to stop codon
+			int firstStopCodon;
 			if(levenshtein(secondCodon, "TAA") == 1) {
 				matchCharacters[4] = 'T';
 				matchCharacters[5] = 'A';
 				matchCharacters[6] = 'A';
+				firstStopCodon = 2;
 			}
 			else if(levenshtein(secondCodon, "TGA") == 1) {
 				matchCharacters[4] = 'T';
 				matchCharacters[5] = 'G';
 				matchCharacters[6] = 'A';
+				firstStopCodon = 2;
 			}
 			else if(levenshtein(secondCodon, "TAG") == 1) {
 				matchCharacters[4] = 'T';
 				matchCharacters[5] = 'A';
 				matchCharacters[6] = 'G';
+				firstStopCodon = 2;
 			}
 			else {
 				matchCharacters[8] = 'T';
+				firstStopCodon = 3;
 			}
 			
 			int l = match.length() - 1;
@@ -92,6 +99,7 @@ public class RegexReplacement {
 			//start at other side
 			String lastCodon = match.substring(l - 3, l);
 			
+			int lastStopCodon = l / 4 + 1;
 			if(levenshtein(lastCodon, "TAA") == 1) {
 				matchCharacters[l - 3] = 'T';
 				matchCharacters[l - 2] = 'A';
@@ -108,13 +116,17 @@ public class RegexReplacement {
 				matchCharacters[l - 1] = 'G';
 			}
 			
-			for(int j = l - 5; j >= l - 9; j--) {
-				if(match.charAt(j) == 'C') {
-					matchCharacters[j] = 'G';
-					break;
+			if(lastStopCodon - firstStopCodon == 6) {
+				matchCharacters[l - 9] = 'G';
+			}
+			else {
+				for(int j = l - 5; j >= l - 9; j--) {
+					if(match.charAt(j) == 'C') {
+						matchCharacters[j] = 'G';
+						break;
+					}
 				}
 			}
-			
 			
 			String formattedMatch = "";
 			for(int j = 0; j < match.length(); j++) {
@@ -122,6 +134,10 @@ public class RegexReplacement {
 			}
 			System.out.println(formattedMatch + "\n");
 		}
+		
+		long endTime   = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime);
 	}
 	
 	public static int levenshtein(String string1, String string2) {
