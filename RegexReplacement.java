@@ -33,7 +33,6 @@ public class RegexReplacement {
 		 */
 		
 		String geneSequence = keyboard.nextLine(); //takes gene sequence as input
-		long startTime = System.currentTimeMillis();
 		
 		Pattern regex = Pattern.compile(regexPattern);
 		Matcher matcher = regex.matcher(geneSequence);
@@ -134,10 +133,6 @@ public class RegexReplacement {
 			}
 			System.out.println(formattedMatch + "\n");
 		}
-		
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		System.out.println(totalTime);
 	}
 	
 	public static int levenshtein(String string1, String string2) {
